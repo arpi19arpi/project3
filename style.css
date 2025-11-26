@@ -1,4 +1,4 @@
-/* Box-sizing for consistent sizing */
+/* global box sizing for consistent layout */
 html {
   box-sizing: border-box;
 }
@@ -6,15 +6,16 @@ html {
   box-sizing: inherit;
 }
 
+/* base styles */
 body {
-  font-family: Arial, Geneva, sans-serif;
+  font-family: arial, geneva, sans-serif;
 }
 
 a {
-  color: #2772B0;
+  color: #2772b0;
 }
 
-/* Wrapper for all rows */
+/* wrapper for page width */
 .wrapper {
   width: 97%;
   max-width: 1200px;
@@ -22,23 +23,23 @@ a {
   background-color: #fff;
 }
 
-/* Images: fixed height to make columns visually even */
+/* image formatting */
 div img {
   width: 100%;
   max-width: 225px;
-  height: 150px; /* fixed height for uniformity */
+  height: 150px;
   object-fit: cover;
   border-radius: 5px;
 }
 
-/* Flex container for all rows */
+/* grid container applied to all rows */
+/* new: using css grid instead of flexbox */
 .row {
-  display: flex;
-  flex-flow: row wrap;
-  margin-bottom: 20px; /* space between rows */
+  display: grid;
+  gap: 20px; /* new: gap replaces margin spacing and controls row and column space */
 }
 
-/* General column styles */
+/* common column styles */
 [class*="col-"] {
   padding: 15px;
   border-radius: 8px;
@@ -46,172 +47,108 @@ div img {
   text-align: center;
 }
 
-/* Row 1: 4 equal columns */
+
+/* row 1 – 4 equal columns */
+/* new: using repeat() to generate equal tracks automatically */
+.row-1 {
+  grid-template-columns: repeat(4, 1fr); 
+}
 .row-1 .col-1 {
-  flex: 0 0 22%;
-  margin-left: 2%;
   background-color: #ffc0cb;
 }
-.row-1 .col-1:first-child {
-  margin-left: 0;
-}
 
-/* Row 2: 2 equal columns */
+
+/* row 2: 2 equal columns */
+.row-2 {
+  grid-template-columns: repeat(2, 1fr); /* new: repeat() for cleaner syntax */
+}
 .row-2 .col-2 {
-  flex: 0 0 46%;
-  margin-left: 4%;
   background-color: #add8e6;
 }
-.row-2 .col-2:first-child {
-  margin-left: 0;
-}
 
-/* Row 3: narrow left + wide right on same line */
+
+/* row 3: 20% column + flexible column */
+/* new: grid template with percentage and 1fr for responsive width */
 .row-3 {
-  flex-wrap: nowrap; /* force single line */
-  justify-content: flex-start;
+  grid-template-columns: 20% 1fr;
 }
-.col-1-3 {
-  flex: 0 0 20%;
-  background-color: #ffc0cb;
-}
-.col-3-3 {
-  flex: 0 0 68%;
-  background-color: #add8e6;
-  margin-left: 4%;
-}
+.col-1-3 { background-color: #ffc0cb; }
+.col-3-3 { background-color: #add8e6; }
 
-/* Row 4: full-width */
+
+/* row 4: single full-width column */
+.row-4 {
+  grid-template-columns: 1fr;
+}
 .col-full {
-  flex: 0 0 100%;
   background-color: #ffc0cb;
-  margin-left: 0;
 }
 
-/* Row 5: Desktop layout 1-col → 2-col → 1-col */
+
+/* row 5: custom layout 1 > 2 > 1 */
+/* new: using minmax() to control minimum + maximum responsive sizes */
+
 .row-5 {
-  display: flex;
-  flex-wrap: wrap;
+  grid-template-columns: 
+    minmax(150px, 20%) 
+    minmax(200px, 1fr) 
+    minmax(150px, 20%);
+  gap: 20px;
 }
+.row-5 .col-1 { background-color: #ffc0cb; }
+.row-5 .col-2 { background-color: #add8e6; }
 
-/* COLUMN WIDTHS ON DESKTOP */
-.row-5 .col-1 {
-  flex: 0 0 20%; /* left & right columns */
-  background-color: #ffc0cb;
-}
 
-.row-5 .col-2 {
-  flex: 0 0 44%; /* middle column */
-  background-color: #add8e6;
-}
-
-/* even spacing: margin-left only for items AFTER the first one */
-.row-5 [class*="col-"] {
-  margin-left: 4%;
-}
-
-/* First item in row gets no left margin */
-.row-5 [class*="col-"]:first-child {
-  margin-left: 0;
-}
-
-/* RESPONSIVE ORDER CHANGES FOR TABLET */
-.order-1 { order: 1; } /* left item */
-.order-2 { order: 2; } /* middle item */
-.order-3 { order: 3; } /* right item */
-
-/* Tablet layout for row 5 */
-@media only screen and (max-width: 767px) {
-  .row-5 [class*="col-"] {
-    flex: 0 0 44%;
-  }
-
-  .order-1 { order: 1; }
-  .order-2 { order: 3; }
-  .order-3 { order: 2; }
-}
-
-/* Mobile layout for row 5 */
-@media only screen and (max-width: 479px) {
-  .row-5 [class*="col-"] {
-    flex: 0 0 92%;
-    margin-left: 0;
-  }
-}
-
-/* Row 6: unique layout using flex-direction: row-reverse */
+/* row 6 – 5 equal grid columns */
+/* new: using repeat(5, 1fr) to auto-create equal tracks */
+/* note: flex reverse behavior removed because grid does not need it */
 .row-6 {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row-reverse; /* reverse visual order */
-  margin-bottom: 20px;
+  grid-template-columns: repeat(5, 1fr);
 }
-
-/* Desktop: 5 items per row */
 .row-6 .col-unique {
-  flex: 0 0 18%; /* basic width for each item */
   background-color: #ffc0cb;
-  padding: 15px;
-  border-radius: 8px;
-  margin-left: 2%;
-  text-align: center;
-}
-
-/* removed extra left margin from visually last item */
-.row-6 .col-unique:last-child {
-  margin-left: 0;
-}
-
-/* Tablet: 2 items per row */
-@media only screen and (max-width: 767px) {
-  .row-6 {
-    flex-direction: row-reverse !important;
-  }
-
-  .row-6 .col-unique {
-    flex: 0 0 44%;
-    margin-left: 4%;
-  }
-
-  .row-6 .col-unique:nth-child(odd) {
-    margin-left: 0;
-  }
-}
-
-/* Mobile: full width */
-@media only screen and (max-width: 479px) {
-  .row-6 {
-    flex-direction: column-reverse !important;
-  }
-
-  .row-6 .col-unique {
-    flex: 0 0 92%;
-    margin-left: 0;
-  }
 }
 
 
-/* MOBILE FIXES FOR ALL ROWS */
+/* tablet styles (medium screens) */
+@media (max-width: 767px) {
 
-@media only screen and (max-width: 479px) {
-  
-  /* Fix Row 1, Row 2, Row 3, Row 4 */
-  .row-1 .col-1,
-  .row-2 .col-2,
-  .row-3 .col-1-3,
-  .row-3 .col-3-3,
-  .col-full {
-    flex: 0 0 92%;
-    margin-left: 0;
+  /* row 1 becomes 2 columns on tablet */
+  .row-1 {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  /* Allowed Row 3 to wrap vertically */
+  /* row 2 becomes 1 column */
+  .row-2 {
+    grid-template-columns: 1fr;
+  }
+
+  /* row 3 stacks vertically */
   .row-3 {
-    flex-wrap: wrap;
+    grid-template-columns: 1fr;
   }
 
-  /* Removed all margins that cause horizontal overflow */
-  [class*="col-"] {
-    margin-left: 0 !important;
+  /* row 5 becomes 2 columns instead of 3 */
+  .row-5 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* row 6 becomes 2 columns */
+  .row-6 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+/* mobile styles (small screens) */
+@media (max-width: 479px) {
+
+  /* new: grid makes it easy to force 1 column layout */
+  .row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .row-6 {
+    grid-template-columns: 1fr;
   }
 }
