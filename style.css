@@ -1,0 +1,217 @@
+/* Box-sizing for consistent sizing */
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: Arial, Geneva, sans-serif;
+}
+
+a {
+  color: #2772B0;
+}
+
+/* Wrapper for all rows */
+.wrapper {
+  width: 97%;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #fff;
+}
+
+/* Images: fixed height to make columns visually even */
+div img {
+  width: 100%;
+  max-width: 225px;
+  height: 150px; /* fixed height for uniformity */
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+/* Flex container for all rows */
+.row {
+  display: flex;
+  flex-flow: row wrap;
+  margin-bottom: 20px; /* space between rows */
+}
+
+/* General column styles */
+[class*="col-"] {
+  padding: 15px;
+  border-radius: 8px;
+  color: #333;
+  text-align: center;
+}
+
+/* Row 1: 4 equal columns */
+.row-1 .col-1 {
+  flex: 0 0 22%;
+  margin-left: 2%;
+  background-color: #ffc0cb;
+}
+.row-1 .col-1:first-child {
+  margin-left: 0;
+}
+
+/* Row 2: 2 equal columns */
+.row-2 .col-2 {
+  flex: 0 0 46%;
+  margin-left: 4%;
+  background-color: #add8e6;
+}
+.row-2 .col-2:first-child {
+  margin-left: 0;
+}
+
+/* Row 3: narrow left + wide right on same line */
+.row-3 {
+  flex-wrap: nowrap; /* force single line */
+  justify-content: flex-start;
+}
+.col-1-3 {
+  flex: 0 0 20%;
+  background-color: #ffc0cb;
+}
+.col-3-3 {
+  flex: 0 0 68%;
+  background-color: #add8e6;
+  margin-left: 4%;
+}
+
+/* Row 4: full-width */
+.col-full {
+  flex: 0 0 100%;
+  background-color: #ffc0cb;
+  margin-left: 0;
+}
+
+/* Row 5: Desktop layout 1-col → 2-col → 1-col */
+.row-5 {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* COLUMN WIDTHS ON DESKTOP */
+.row-5 .col-1 {
+  flex: 0 0 20%; /* left & right columns */
+  background-color: #ffc0cb;
+}
+
+.row-5 .col-2 {
+  flex: 0 0 44%; /* middle column */
+  background-color: #add8e6;
+}
+
+/* even spacing: margin-left only for items AFTER the first one */
+.row-5 [class*="col-"] {
+  margin-left: 4%;
+}
+
+/* First item in row gets no left margin */
+.row-5 [class*="col-"]:first-child {
+  margin-left: 0;
+}
+
+/* RESPONSIVE ORDER CHANGES FOR TABLET */
+.order-1 { order: 1; } /* left item */
+.order-2 { order: 2; } /* middle item */
+.order-3 { order: 3; } /* right item */
+
+/* Tablet layout for row 5 */
+@media only screen and (max-width: 767px) {
+  .row-5 [class*="col-"] {
+    flex: 0 0 44%;
+  }
+
+  .order-1 { order: 1; }
+  .order-2 { order: 3; }
+  .order-3 { order: 2; }
+}
+
+/* Mobile layout for row 5 */
+@media only screen and (max-width: 479px) {
+  .row-5 [class*="col-"] {
+    flex: 0 0 92%;
+    margin-left: 0;
+  }
+}
+
+/* Row 6: unique layout using flex-direction: row-reverse */
+.row-6 {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row-reverse; /* reverse visual order */
+  margin-bottom: 20px;
+}
+
+/* Desktop: 5 items per row */
+.row-6 .col-unique {
+  flex: 0 0 18%; /* basic width for each item */
+  background-color: #ffc0cb;
+  padding: 15px;
+  border-radius: 8px;
+  margin-left: 2%;
+  text-align: center;
+}
+
+/* removed extra left margin from visually last item */
+.row-6 .col-unique:last-child {
+  margin-left: 0;
+}
+
+/* Tablet: 2 items per row */
+@media only screen and (max-width: 767px) {
+  .row-6 {
+    flex-direction: row-reverse !important;
+  }
+
+  .row-6 .col-unique {
+    flex: 0 0 44%;
+    margin-left: 4%;
+  }
+
+  .row-6 .col-unique:nth-child(odd) {
+    margin-left: 0;
+  }
+}
+
+/* Mobile: full width */
+@media only screen and (max-width: 479px) {
+  .row-6 {
+    flex-direction: column-reverse !important;
+  }
+
+  .row-6 .col-unique {
+    flex: 0 0 92%;
+    margin-left: 0;
+  }
+}
+
+
+/* MOBILE FIXES FOR ALL ROWS */
+
+@media only screen and (max-width: 479px) {
+  
+  /* Fix Row 1, Row 2, Row 3, Row 4 */
+  .row-1 .col-1,
+  .row-2 .col-2,
+  .row-3 .col-1-3,
+  .row-3 .col-3-3,
+  .col-full {
+    flex: 0 0 92%;
+    margin-left: 0;
+  }
+
+  /* Allowed Row 3 to wrap vertically */
+  .row-3 {
+    flex-wrap: wrap;
+  }
+
+  /* Removed all margins that cause horizontal overflow */
+  [class*="col-"] {
+    margin-left: 0 !important;
+  }
+}
